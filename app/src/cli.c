@@ -357,8 +357,7 @@ scrcpy_parse_args(struct scrcpy_cli_args *args, int argc, char *argv[]) {
         {"push-target",           required_argument, NULL, OPT_PUSH_TARGET},
         {"record",                required_argument, NULL, 'r'},
         {"record-format",         required_argument, NULL, OPT_RECORD_FORMAT},
-        {"render-expired-frames", no_argument,       NULL,
-                                                     OPT_RENDER_EXPIRED_FRAMES},
+        {"render-expired-frames", no_argument,       NULL, OPT_RENDER_EXPIRED_FRAMES},
         {"serial",                required_argument, NULL, 's'},
         {"show-touches",          no_argument,       NULL, 't'},
         {"turn-screen-off",       no_argument,       NULL, 'S'},
@@ -369,8 +368,8 @@ scrcpy_parse_args(struct scrcpy_cli_args *args, int argc, char *argv[]) {
         {"window-y",              required_argument, NULL, OPT_WINDOW_Y},
         {"window-width",          required_argument, NULL, OPT_WINDOW_WIDTH},
         {"window-height",         required_argument, NULL, OPT_WINDOW_HEIGHT},
-        {"window-borderless",     no_argument,       NULL,
-                                                     OPT_WINDOW_BORDERLESS},
+        {"window-borderless",     no_argument,       NULL, OPT_WINDOW_BORDERLESS},
+        {"codec-profile",         required_argument, NULL, 'P'},
         {NULL,                    0,                 NULL, 0  },
     };
 
