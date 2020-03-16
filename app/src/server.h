@@ -17,6 +17,7 @@ struct server {
     uint16_t local_port;
     bool tunnel_enabled;
     bool tunnel_forward; // use "adb forward" instead of "adb reverse"
+    uint32_t codec_profile;
 };
 
 #define SERVER_INITIALIZER {          \
@@ -25,9 +26,20 @@ struct server {
     .server_socket = INVALID_SOCKET,  \
     .video_socket = INVALID_SOCKET,   \
     .control_socket = INVALID_SOCKET, \
+<<<<<<< HEAD
     .local_port = 0,                  \
     .tunnel_enabled = false,          \
     .tunnel_forward = false,          \
+=======
+    .port_range = { \
+        .first = 0, \
+        .last = 0, \
+    }, \
+    .local_port = 0, \
+    .tunnel_enabled = false, \
+    .tunnel_forward = false, \
+    .codec_profile = 0,
+>>>>>>> e49657a... Adding codec-profile option to the server exec params
 }
 
 struct server_params {
