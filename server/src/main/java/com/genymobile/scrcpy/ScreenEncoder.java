@@ -1,5 +1,6 @@
 package com.genymobile.scrcpy;
 
+import com.genymobile.scrcpy.wrappers.CodecUtils;
 import com.genymobile.scrcpy.wrappers.SurfaceControl;
 
 import android.graphics.Rect;
@@ -31,7 +32,7 @@ public class ScreenEncoder implements Device.RotationListener {
     private int codecProfile;
     private boolean sendFrameMeta;
     private long ptsOrigin;
-    
+
     public ScreenEncoder(boolean sendFrameMeta, int bitRate, int maxFps, int codecProfile, int iFrameInterval) {
         this.sendFrameMeta = sendFrameMeta;
         this.bitRate = bitRate;
@@ -63,11 +64,11 @@ public class ScreenEncoder implements Device.RotationListener {
         try {
             do {
                 MediaCodec codec = createCodec();
-                setCodecProfile(codec, format);
                 IBinder display = createDisplay();
                 Rect contentRect = device.getScreenInfo().getContentRect();
                 Rect videoRect = device.getScreenInfo().getVideoSize().toRect();
                 setSize(format, videoRect.width(), videoRect.height());
+                setCodecProfile(codec, format, videoRect.width(), videoRect.height());
                 configure(codec, format);
                 Surface surface = codec.createInputSurface();
                 setDisplaySurface(display, surface, contentRect, videoRect);
@@ -137,15 +138,18 @@ public class ScreenEncoder implements Device.RotationListener {
         IO.writeFully(fd, headerBuffer);
     }
 
-    private void setCodecProfile(MediaCodec codec, MediaFormat format) throws IOException {
+    private void setCodecProfile(MediaCodec codec, MediaFormat format, int width, int height) throws IOException {
+        boolean codecSupported = false;
         if(codecProfile == 0) return;
-        int level = 0;
+        int level = CodecUtils.calculateLevel(width, height, bitRate);
+        if (level == 0) return;
         for (MediaCodecInfo.CodecProfileLevel profileLevel : codec.getCodecInfo().getCapabilitiesForType("video/avc").profileLevels) {
-            if(profileLevel.profile == codecProfile) {
-                level = Math.max(level, profileLevel.level);
+            if (profileLevel.profile == codecProfile) {
+                codecSupported = true;
+                break;
             }
         }
-        if(level == 0) throw new IOException("Device doesn't support the requested codec profile.");
+        if(!codecSupported) throw new IOException("Device doesn't support the requested codec profile.");
         // Profile (SDK Level 21) and Level (SDK Level 23).
         format.setInteger(MediaFormat.KEY_PROFILE, codecProfile);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
