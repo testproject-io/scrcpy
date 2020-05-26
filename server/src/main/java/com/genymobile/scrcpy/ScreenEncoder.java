@@ -141,6 +141,7 @@ public class ScreenEncoder implements Device.RotationListener {
     private void setCodecProfile(MediaCodec codec, MediaFormat format, int width, int height) throws IOException {
         boolean codecSupported = false;
         if(codecProfile == 0) return;
+        Ln.i("Requested codec profile: " + CodecUtils.getProfileName(codecProfile));
         int level = CodecUtils.calculateLevel(width, height, bitRate);
         if (level == 0) return;
         for (MediaCodecInfo.CodecProfileLevel profileLevel : codec.getCodecInfo().getCapabilitiesForType("video/avc").profileLevels) {
