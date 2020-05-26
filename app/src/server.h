@@ -26,20 +26,10 @@ struct server {
     .server_socket = INVALID_SOCKET,  \
     .video_socket = INVALID_SOCKET,   \
     .control_socket = INVALID_SOCKET, \
-<<<<<<< HEAD
     .local_port = 0,                  \
     .tunnel_enabled = false,          \
     .tunnel_forward = false,          \
-=======
-    .port_range = { \
-        .first = 0, \
-        .last = 0, \
-    }, \
-    .local_port = 0, \
-    .tunnel_enabled = false, \
-    .tunnel_forward = false, \
-    .codec_profile = 0,
->>>>>>> e49657a... Adding codec-profile option to the server exec params
+    .codec_profile = 0,               \
 }
 
 struct server_params {
